@@ -11,18 +11,18 @@ const loginController = {
       const isMatch = await bcrypt.compare(req.body.password, user.password);
 
       if (!isMatch) {
-        res.send('Invalid credentials');
+        res.status(401).json({ error: 'Invalid credentials' });
       }
 
       const token = user.generateAuthToken();
 
-      res.header('x-auth-token', token).send({
+      res.header('x-auth-token', token).json({
         _id: user._id,
         name: user.name,
         email: user.email,
       });
     } catch (err) {
-      res.status(500).send();
+      res.status(500).json();
     }
   },
 };

@@ -2,12 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import Home from './components/Home';
-
-const Login = () => (
-  <div>
-    <p>Login</p>
-  </div>
-);
+import Login from './components/Login';
 
 const App = () => (
   <Router>

@@ -5,14 +5,14 @@ const StyledDashboard = styled.main`
   @media (max-width: 1000px) {
     flex-wrap: wrap-reverse;
   }
-  & > article {
+  .projects-list {
     flex-grow: 3;
     display: flex;
     flex-wrap: wrap;
     border: 2px solid pink;
     /* padding: 20px; */
   }
-  & > aside {
+  .new-project-box {
     flex-grow: 1;
     /* display: flex;  */
     /* flex-wrap: nowrap; */

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 const StyledProject = styled.article`
-  width: 300px;
-  /* max-width: 300px; */
+  width: 100%;
+  max-width: 300px;
   border: 1px solid #333;
   border-radius: 5px;
   margin: 10px;
@@ -37,9 +37,9 @@ const StyledProject = styled.article`
     padding: 10px 20px;
     border-top: 1px solid #333;
     border-radius: 0 0 5px 5px;
-    input,
-    button {
-      padding: 10px;
+    form {
+      display: flex;
+      justify-content: space-between;
     }
   }
 `;
