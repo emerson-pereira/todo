@@ -32,6 +32,16 @@ const StyledProject = styled.article`
       margin-top: 20px;
     }
   }
+
+  footer {
+    padding: 10px 20px;
+    border-top: 1px solid #333;
+    border-radius: 0 0 5px 5px;
+    input,
+    button {
+      padding: 10px;
+    }
+  }
 `;
 
 export default StyledProject;

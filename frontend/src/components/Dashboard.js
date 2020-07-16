@@ -10,7 +10,7 @@ const Dashboard = () => (
       <Project />
     </article>
     <aside>
-      <Project />
+      <div style={{ width: '300px', background: '#ccc' }}>Add project</div>
     </aside>
   </StyledDashboard>
 );

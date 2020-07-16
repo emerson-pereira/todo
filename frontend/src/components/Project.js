@@ -34,6 +34,10 @@ const Project = () => (
         </ul>
       </section>
     </main>
+    <footer>
+      <input type="text" placeholder="New Task" />
+      <button>Add</button>
+    </footer>
   </StyledProject>
 );
 
