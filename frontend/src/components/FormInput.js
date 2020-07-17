@@ -1,12 +1,12 @@
 import React from 'react';
-import StyledFormInput from './styles/StyledFormInput';
+import StyledInput from './styles/StyledInput';
 
 const FormInput = ({ label, input }) => (
   <p>
     <label htmlFor={input.name}>
       <span>{label}</span>
       <br />
-      <StyledFormInput
+      <StyledInput
         type={input.type}
         value={input.value}
         id={input.name}

@@ -9,6 +9,7 @@ import {
 import Nav from './components/Nav';
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
+import CreateUser from './components/User/CreateUser';
 import UpdateProject from './components/Project/UpdateProject';
 import RemoveProject from './components/Project/RemoveProject';
 import UpdateTask from './components/Task/UpdateTask';
@@ -37,7 +38,10 @@ const Routes = () => (
     <Nav />
     <Switch>
       <PublicRoute path="/login">
-        <Login />
+        {token ? <Redirect to="/" /> : <Login />}
+      </PublicRoute>
+      <PublicRoute path="/register">
+        {token ? <Redirect to="/" /> : <CreateUser />}
       </PublicRoute>
 
       <PrivateRoute exact path="/">

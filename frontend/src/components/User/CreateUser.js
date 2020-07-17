@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import FormInput from './FormInput';
 
-import StyledButton from './styles/StyledButton';
+import StyledForm from '../styles/StyledForm';
+import StyledInput from '../styles/StyledInput';
+import StyledButton from '../styles/StyledButton';
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -18,45 +19,51 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const createUser = (e) => {
     e.preventDefault();
 
     console.log(user);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FormInput
-        label="Name"
-        input={{
-          type: 'text',
-          name: 'name',
-          value: user.name,
-          handleChange,
-        }}
-      />
+    <StyledForm onSubmit={createUser}>
+      <h3>Register user</h3>
 
-      <FormInput
-        label="Email"
-        input={{
-          type: 'text',
-          name: 'email',
-          value: user.email,
-          handleChange,
-        }}
-      />
+      <p>
+        <StyledInput
+          type="text"
+          value={user.name}
+          id="name"
+          name="name"
+          placeholder="Name"
+          onChange={handleChange}
+        />
+      </p>
 
-      <FormInput
-        label="Password"
-        input={{
-          type: 'password',
-          name: 'password',
-          value: user.password,
-          handleChange,
-        }}
-      />
-      <StyledButton>Submit</StyledButton>
-    </form>
+      <p>
+        <StyledInput
+          type="text"
+          value={user.email}
+          id="email"
+          name="email"
+          placeholder="Email"
+          onChange={handleChange}
+        />
+      </p>
+
+      <p>
+        <StyledInput
+          type="password"
+          value={user.password}
+          id="password"
+          name="password"
+          placeholder="Password"
+          onChange={handleChange}
+        />
+      </p>
+
+      <StyledButton block>Submit</StyledButton>
+    </StyledForm>
   );
 };
 

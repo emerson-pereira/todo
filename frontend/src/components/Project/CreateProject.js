@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ProjectAPI from '../../api/ProjectAPI';
 
-import StyledFormInput from '../styles/StyledFormInput';
+import StyledInput from '../styles/StyledInput';
 import StyledButton from '../styles/StyledButton';
 
 const StyledBox = styled.aside`
@@ -46,7 +46,7 @@ const CreateProject = ({ setProjects }) => {
     <StyledBox>
       <h3 style={{ margin: '0 0 20px' }}>Create new project</h3>
       <form onSubmit={createProject}>
-        <StyledFormInput
+        <StyledInput
           type="text"
           value={projectName}
           id="name"
@@ -54,7 +54,9 @@ const CreateProject = ({ setProjects }) => {
           placeholder="Project name"
           onChange={(e) => setProjectName(e.target.value)}
         />
-        <StyledButton>Create</StyledButton>
+        <StyledButton inline dark>
+          Create
+        </StyledButton>
       </form>
     </StyledBox>
   );

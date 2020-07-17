@@ -4,7 +4,7 @@ import ProjectAPI from '../../api/ProjectAPI';
 import TaskAPI from '../../api/TaskAPI';
 
 import StyledProject from '../styles/StyledProject';
-import StyledFormInput from '../styles/StyledFormInput';
+import StyledInput from '../styles/StyledInput';
 import StyledButton from '../styles/StyledButton';
 
 const Project = ({ id: projectId, name, tasks, setProjects }) => {
@@ -128,8 +128,7 @@ const Project = ({ id: projectId, name, tasks, setProjects }) => {
       </main>
       <footer>
         <form>
-          <StyledFormInput
-            small
+          <StyledInput
             type="text"
             value={newTaskName}
             onChange={(e) => {
@@ -138,7 +137,9 @@ const Project = ({ id: projectId, name, tasks, setProjects }) => {
             }}
             placeholder="Task name"
           />
-          <StyledButton onClick={addTask}>Add</StyledButton>
+          <StyledButton inline onClick={addTask}>
+            Add
+          </StyledButton>
         </form>
       </footer>
     </StyledProject>

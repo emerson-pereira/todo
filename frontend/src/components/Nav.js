@@ -26,10 +26,10 @@ const Nav = () => {
   const NavLogged = () => (
     <>
       <li>
-        <Link to="/">Your Profile</Link>
+        <Link to="/user/profile">Your Profile</Link>
       </li>
       <li>
-        <Link to="/">Sign out</Link>
+        <Link to="/">Logout</Link>
       </li>
     </>
   );
@@ -37,10 +37,10 @@ const Nav = () => {
   const NavNotLogged = () => (
     <>
       <li>
-        <Link to="/">Sign up</Link>
+        <Link to="/register">Register</Link>
       </li>
       <li>
-        <Link to="/">Sign in</Link>
+        <Link to="/login">Login</Link>
       </li>
     </>
   );

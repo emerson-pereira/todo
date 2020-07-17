@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const StyledProject = styled.article`
   width: 100%;
   max-width: 350px;
-  border: 1px solid #333;
+  border: 2px solid #ccc;
   border-radius: 5px;
   margin: 0 10px 20px;
   display: flex;
@@ -14,7 +14,6 @@ const StyledProject = styled.article`
     justify-content: space-between;
     padding: 10px 20px;
     background: #ccc;
-    border-bottom: 1px solid #333;
     border-radius: 5px 5px 0 0;
 
     h2 {
@@ -37,8 +36,8 @@ const StyledProject = styled.article`
   }
 
   footer {
-    padding: 10px 20px;
-    border-top: 1px solid #333;
+    padding: 20px;
+    border-top: 1px solid #ccc;
     border-radius: 0 0 5px 5px;
     form {
       display: flex;
