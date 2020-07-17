@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ProjectAPI from '../../api/ProjectAPI';
+import { getToken } from '../../utils';
 
 import StyledInput from '../styles/StyledInput';
 import StyledButton from '../styles/StyledButton';
@@ -22,10 +23,11 @@ const StyledBox = styled.aside`
 
 const CreateProject = ({ setProjects }) => {
   const [projectName, setProjectName] = useState('');
-  const token = localStorage.getItem('token');
 
   const createProject = async (e) => {
     e.preventDefault();
+
+    const token = getToken();
 
     const project = await ProjectAPI.createUserProject({
       token,

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProjectAPI from '../../api/ProjectAPI';
 import TaskAPI from '../../api/TaskAPI';
+import { getToken } from '../../utils';
 
 import StyledProject from '../styles/StyledProject';
 import StyledInput from '../styles/StyledInput';
@@ -9,10 +10,11 @@ import StyledButton from '../styles/StyledButton';
 
 const Project = ({ id: projectId, name, tasks, setProjects }) => {
   const [newTaskName, setNewTaskName] = useState('');
-  const token = localStorage.getItem('token');
 
   const undoneTasks = tasks.filter((task) => !task.isDone);
   const doneTasks = tasks.filter((task) => task.isDone);
+
+  const token = getToken();
 
   const toggleTaskStatus = async (e, taskId) => {
     e.preventDefault();

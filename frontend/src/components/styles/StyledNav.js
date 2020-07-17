@@ -16,13 +16,18 @@ const StyledNav = styled.nav`
   h1 {
     margin: 0;
   }
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    li {
-      padding: 10px;
+
+  .nav-links-wrapper {
+    text-align: center;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      li {
+        padding: 10px;
+      }
     }
   }
 `;

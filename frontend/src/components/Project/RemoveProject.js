@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import ProjectAPI from '../../api/ProjectAPI';
+import { getToken } from '../../utils';
 
 import StyledForm from '../styles/StyledForm';
 import StyledButton from '../styles/StyledButton';
@@ -9,7 +10,7 @@ const RemoveProject = () => {
   const [projectName, setProjectName] = useState('');
   const { projectId } = useParams();
   const history = useHistory();
-  const token = localStorage.getItem('token');
+  const token = getToken();
 
   useEffect(() => {
     const getCurrentProject = async () => {

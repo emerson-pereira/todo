@@ -2,20 +2,21 @@ import React, { useState, useEffect } from 'react';
 import Project from './Project/Project';
 import CreateProject from './Project/CreateProject';
 import ProjectAPI from '../api/ProjectAPI';
+import { getToken } from '../utils';
 
 import StyledDashboard from './styles/StyledDashbaord';
 
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
-  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const getProjects = async () => {
+      const token = getToken();
       const userProjects = await ProjectAPI.getUserProjects({ token });
       userProjects && setProjects(userProjects);
     };
-    token && getProjects();
-  }, [token]);
+    getProjects();
+  }, []);
 
   return (
     <StyledDashboard>

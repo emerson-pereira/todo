@@ -5,6 +5,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import { isAuth } from './utils';
 
 import Nav from './components/Nav';
 import Dashboard from './components/Dashboard';
@@ -17,10 +18,8 @@ import RemoveTask from './components/Task/RemoveTask';
 
 import StyledContainer from './components/styles/StyledContainer';
 
-const checkToken = () => !!localStorage.getItem('token');
-
 const PrivateRoute = ({ children, ...rest }) =>
-  checkToken() ? (
+  isAuth() ? (
     <Route {...rest}>
       <StyledContainer>{children}</StyledContainer>
     </Route>
@@ -39,10 +38,10 @@ const Routes = () => (
     <Nav />
     <Switch>
       <PublicRoute path="/login">
-        {checkToken() ? <Redirect to="/" /> : <Login />}
+        {isAuth() ? <Redirect to="/" /> : <Login />}
       </PublicRoute>
       <PublicRoute path="/register">
-        {checkToken() ? <Redirect to="/" /> : <CreateUser />}
+        {isAuth() ? <Redirect to="/" /> : <CreateUser />}
       </PublicRoute>
 
       <PrivateRoute exact path="/">
