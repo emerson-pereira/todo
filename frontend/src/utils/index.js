@@ -27,7 +27,17 @@ export const formatDate = (timestamp) => {
   const hour = date.getUTCHours();
   const min = date.getUTCMinutes();
 
-  const formattedDate = `${year}, ${month} ${day} - ${hour}:${min}`;
+  const formattedDate = `${year}, ${month} ${day} - ${padNumber(
+    hour
+  )}:${padNumber(min)}`;
 
   return formattedDate;
+};
+
+const padNumber = (number) => {
+  var str = '' + number;
+  while (str.length < 2) {
+    str = '0' + str;
+  }
+  return str;
 };
