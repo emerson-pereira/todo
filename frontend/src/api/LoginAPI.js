@@ -1,25 +1,13 @@
-import axios from 'axios';
-
-const baseURL = 'http://localhost:4000';
+import { http } from './http';
+import { success, fail } from './reply';
 
 const LoginAPI = {
   async login({ data }) {
-    const response = await axios({
-      baseURL,
-      url: '/login',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data,
-    });
-
-    if (response.status === 200) {
-      const { data, headers } = response;
-      return {
-        token: headers['x-auth-token'],
-        data,
-      };
+    try {
+      const response = await http.post('/login', data);
+      return success(response);
+    } catch (err) {
+      return fail(err.response);
     }
   },
 };

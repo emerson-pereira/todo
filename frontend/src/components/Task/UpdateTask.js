@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import TaskAPI from '../../api/TaskAPI';
-import { getToken } from '../../utils';
 
 import StyledForm from '../styles/StyledForm';
 import StyledInput from '../styles/StyledInput';
@@ -9,35 +8,43 @@ import StyledButton from '../styles/StyledButton';
 
 const UpdateTask = () => {
   const [taskName, setTaskName] = useState('');
-  const { projectId, taskId } = useParams();
+  const { taskId, projectId } = useParams();
   const history = useHistory();
-  const token = getToken();
 
   useEffect(() => {
     const getCurrentTask = async () => {
-      const task = await TaskAPI.getProjectTaskById({
-        token,
+      const response = await TaskAPI.findOne({
+        id: taskId,
         projectId,
-        taskId,
       });
-      task && setTaskName(task.name);
+
+      if (response.data) {
+        setTaskName(response.data.name);
+      } else {
+        // openSnackbar({ type: 'error', message: response.message })
+      }
     };
     getCurrentTask();
-  }, [token, projectId, taskId]);
+  }, [projectId, taskId]);
 
   const updateTask = async (e) => {
     e.preventDefault();
 
-    const task = await TaskAPI.updateProjecTask({
-      token,
+    const data = {
+      name: taskName,
+    };
+
+    const response = await TaskAPI.update({
+      id: taskId,
       projectId,
-      taskId,
-      data: {
-        name: taskName,
-      },
+      data,
     });
 
-    task && history.push('/');
+    if (response.data) {
+      history.push('/');
+    } else {
+      // openSnackbar({ type: 'error', message: response.message })
+    }
   };
 
   return (

@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import UserAPI from '../api/UserAPI';
 import { UserContext } from '../UserContext';
-import { getToken, removeToken, isAuth } from '../utils';
+import { removeToken, isAuth } from '../utils';
 
 import StyledNav from './styles/StyledNav';
 import StyledNavLink from './styles/StyledNavLink';
@@ -12,14 +12,16 @@ const Nav = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const token = getToken();
-      const userData = await UserAPI.getUser({ token });
+      const response = await UserAPI.findCurrent();
 
-      userData &&
+      if (response.data) {
         setUser({
-          name: userData.name,
-          email: userData.email,
+          name: response.data.name,
+          email: response.data.email,
         });
+      } else {
+        // openSnackbar({ type: 'error', message: response.message })
+      }
     };
 
     !user.name && isAuth() && getUser();

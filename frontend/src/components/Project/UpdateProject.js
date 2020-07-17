@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import ProjectAPI from '../../api/ProjectAPI';
-import { getToken } from '../../utils';
 
 import StyledForm from '../styles/StyledForm';
 import StyledInput from '../styles/StyledInput';
@@ -11,31 +10,37 @@ const UpdateProject = () => {
   const [projectName, setProjectName] = useState('');
   const { projectId } = useParams();
   const history = useHistory();
-  const token = getToken();
 
   useEffect(() => {
     const getCurrentProject = async () => {
-      const project = await ProjectAPI.getUserProjectById({
-        token,
-        projectId,
-      });
-      project && setProjectName(project.name);
+      const response = await ProjectAPI.findOne({ id: projectId });
+
+      if (response.data) {
+        setProjectName(response.data.name);
+      } else {
+        // openSnackbar({ type: 'error', message: response.message })
+      }
     };
     getCurrentProject();
-  }, [token, projectId]);
+  }, [projectId]);
 
   const updateProject = async (e) => {
     e.preventDefault();
 
-    const project = await ProjectAPI.updateUserProject({
-      token,
-      projectId,
-      data: {
-        name: projectName,
-      },
+    const data = {
+      name: projectName,
+    };
+
+    const response = await ProjectAPI.update({
+      id: projectId,
+      data,
     });
 
-    project && history.push('/');
+    if (response.data) {
+      history.push('/');
+    } else {
+      // openSnackbar({ type: 'error', message: response.message })
+    }
   };
 
   return (

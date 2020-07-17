@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ProjectAPI from '../../api/ProjectAPI';
-import { getToken } from '../../utils';
 
 import StyledInput from '../styles/StyledInput';
 import StyledButton from '../styles/StyledButton';
@@ -13,7 +12,7 @@ const StyledBox = styled.aside`
   }
   text-align: center;
   h3 {
-    margin: '0 0 20px';
+    margin: 0 0 20px;
   }
   form {
     display: flex;
@@ -27,26 +26,26 @@ const CreateProject = ({ setProjects }) => {
   const createProject = async (e) => {
     e.preventDefault();
 
-    const token = getToken();
+    const data = {
+      name: projectName,
+    };
 
-    const project = await ProjectAPI.createUserProject({
-      token,
-      data: {
-        name: projectName,
-      },
-    });
+    const response = await ProjectAPI.create({ data });
 
-    if (project) {
-      const userProjects = await ProjectAPI.getUserProjects({ token });
-      userProjects && setProjects(userProjects);
+    if (response.data) {
+      setProjectName('');
+      // updateProjectListState(response.data)
+      // ignores rest below
+      const response = await ProjectAPI.find();
+      if (response.data) {
+        setProjects(response.data.projects);
+      }
     }
-
-    project && setProjectName('');
   };
 
   return (
     <StyledBox>
-      <h3 style={{ margin: '0 0 20px' }}>Create new project</h3>
+      <h3>Create new project</h3>
       <form onSubmit={createProject}>
         <StyledInput
           type="text"

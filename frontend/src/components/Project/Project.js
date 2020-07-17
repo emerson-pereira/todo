@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import ProjectAPI from '../../api/ProjectAPI';
 import TaskAPI from '../../api/TaskAPI';
-import { getToken, formatDate } from '../../utils';
+import { formatDate } from '../../utils';
 
 import StyledProject from '../styles/StyledProject';
 import StyledInput from '../styles/StyledInput';
@@ -15,41 +15,50 @@ const Project = ({ id: projectId, name, tasks, setProjects }) => {
   const undoneTasks = tasks.filter((task) => !task.isDone);
   const doneTasks = tasks.filter((task) => task.isDone);
 
-  const token = getToken();
-
-  const toggleTaskStatus = async (e, taskId) => {
+  const toggleTaskStatus = async (e, id) => {
     e.preventDefault();
 
-    const task = await TaskAPI.updateProjecTask({
-      token,
+    const data = {
+      isDone: e.target.checked,
+    };
+
+    const response = await TaskAPI.update({
+      id,
       projectId,
-      taskId,
-      data: {
-        isDone: e.target.checked,
-      },
+      data,
     });
 
-    if (task) {
-      const userProjects = await ProjectAPI.getUserProjects({ token });
-      userProjects && setProjects(userProjects);
+    if (response.data) {
+      // updateProjectListState(response.data)
+      // ignores rest below
+      const response = await ProjectAPI.find();
+      if (response.data) {
+        setProjects(response.data.projects);
+      }
+    } else {
     }
   };
 
   const addTask = async (e) => {
     e.preventDefault();
 
-    const task = await TaskAPI.createProjectTask({
-      token,
+    const data = {
+      name: newTaskName,
+    };
+
+    const response = await TaskAPI.create({
       projectId,
-      data: {
-        name: newTaskName,
-      },
+      data,
     });
 
-    if (task) {
+    if (response.data) {
       setNewTaskName('');
-      const userProjects = await ProjectAPI.getUserProjects({ token });
-      userProjects && setProjects(userProjects);
+      // updateProjectListState(response.data)
+      // ignores rest below
+      const response = await ProjectAPI.find();
+      if (response.data) {
+        setProjects(response.data.projects);
+      }
     }
   };
 

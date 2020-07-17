@@ -1,50 +1,22 @@
-import axios from 'axios';
-
-const baseURL = 'http://localhost:4000';
+import { http } from './http';
+import { success, fail } from './reply';
 
 const UserAPI = {
-  async createUser({ data }) {
+  async findCurrent() {
     try {
-      const response = await axios({
-        baseURL,
-        url: '/users',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        data,
-      });
-
-      if (response.status === 201) {
-        const { data, headers } = response;
-        return {
-          token: headers['x-auth-token'],
-          data,
-        };
-      }
+      const response = await http.get('/users/current');
+      return success(response);
     } catch (err) {
-      console.error(err);
+      return fail(err.response);
     }
   },
 
-  async getUser({ token }) {
+  async create({ data }) {
     try {
-      const response = await axios({
-        baseURL,
-        url: '/users/current',
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-      });
-
-      if (response.status === 200) {
-        const { data } = response;
-        return data;
-      }
+      const response = await http.post('/users', data);
+      return success(response);
     } catch (err) {
-      console.error(err);
+      return fail(err.response);
     }
   },
 };

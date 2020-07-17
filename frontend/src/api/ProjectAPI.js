@@ -1,112 +1,49 @@
-import axios from 'axios';
-
-const baseURL = 'http://localhost:4000';
+import { http } from './http';
+import { success, fail } from './reply';
 
 const ProjectAPI = {
-  async createUserProject({ token, data }) {
+  async find() {
     try {
-      const response = await axios({
-        baseURL,
-        url: '/users/current/projects',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-        data,
-      });
-
-      if (response.status === 201) {
-        const { data } = response;
-        return data;
-      }
+      const response = await http.get('/users/current/projects');
+      return success(response);
     } catch (err) {
-      console.error(err);
+      return fail(err.response);
     }
   },
 
-  async getUserProjects({ token }) {
+  async findOne({ id }) {
     try {
-      const response = await axios({
-        baseURL,
-        url: '/users/current/projects',
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-      });
-
-      if (response.status === 200) {
-        const { data } = response;
-        return data.projects;
-      }
+      const response = await http.get(`/users/current/projects/${id}`);
+      return success(response);
     } catch (err) {
-      console.error(err);
+      return fail(err.response);
     }
   },
 
-  async getUserProjectById({ token, projectId }) {
+  async create({ data }) {
     try {
-      const response = await axios({
-        baseURL,
-        url: `/users/current/projects/${projectId}`,
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-      });
-
-      if (response.status === 200) {
-        const { data } = response;
-        return data;
-      }
+      const response = await http.post('/users/current/projects', data);
+      return success(response);
     } catch (err) {
-      console.error(err);
+      return fail(err.response);
     }
   },
 
-  async updateUserProject({ token, projectId, data }) {
+  async update({ id, data }) {
     try {
-      const response = await axios({
-        baseURL,
-        url: `/users/current/projects/${projectId}`,
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-        data,
-      });
-
-      if (response.status === 200) {
-        const { data } = response;
-        return data;
-      }
+      const response = await http.put(`/users/current/projects/${id}`, data);
+      return success(response);
     } catch (err) {
-      console.error(err);
+      return fail(err.response);
     }
   },
 
-  async removeUserProject({ token, projectId }) {
+  async remove({ id }) {
     try {
-      const response = await axios({
-        baseURL,
-        url: `/users/current/projects/${projectId}`,
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-      });
-
-      if (response.status === 200) {
-        const { data } = response;
-        return data;
-      }
+      const response = await http.delete(`/users/current/projects/${id}`);
+      return success(response);
     } catch (err) {
-      console.error(err);
+      return fail(err.response);
     }
   },
 };

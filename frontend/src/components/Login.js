@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import LoginAPI from '../api/LoginAPI';
 import { UserContext } from '../UserContext';
-import { setToken } from '../utils';
 
 import StyledForm from './styles/StyledForm';
 import StyledInput from './styles/StyledInput';
@@ -26,22 +25,34 @@ const Login = () => {
     });
   };
 
+  const openSnackbar = (args) => console.table(args);
+
   const login = async (e) => {
     e.preventDefault();
 
-    const loggedUser = await LoginAPI.login({ data: user });
+    try {
+      const response = await LoginAPI.login({ data: user });
 
-    if (loggedUser) {
-      const { data, token } = loggedUser;
+      if (response.error) {
+        openSnackbar({
+          type: 'error',
+          text: response.error.message,
+        });
+      } else if (response.data) {
+        setContextUser({
+          name: response.data.name,
+          email: response.data.email,
+        });
 
-      setContextUser({
-        name: data.name,
-        email: data.email,
+        history.push('/');
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      openSnackbar({
+        type: 'error',
+        text: 'Something went wrong logging in.',
       });
-
-      setToken(token);
-
-      history.push('/');
     }
   };
 

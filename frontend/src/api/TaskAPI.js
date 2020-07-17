@@ -1,112 +1,61 @@
-import axios from 'axios';
-
-const baseURL = 'http://localhost:4000';
+import { http } from './http';
+import { success, fail } from './reply';
 
 const TaskAPI = {
-  async createProjectTask({ token, projectId, data }) {
+  async find({ projectId }) {
     try {
-      const response = await axios({
-        baseURL,
-        url: `/users/current/projects/${projectId}/tasks`,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-        data,
-      });
-
-      if (response.status === 201) {
-        const { data } = response;
-        return data;
-      }
+      const response = await http.get(
+        `/users/current/projects/${projectId}/tasks`
+      );
+      return success(response);
     } catch (err) {
-      console.error(err);
+      return fail(err.response);
     }
   },
 
-  async getProjectTasks({ token, projectId }) {
+  async findOne({ id, projectId }) {
     try {
-      const response = await axios({
-        baseURL,
-        url: `/users/current/projects/${projectId}/tasks`,
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-      });
-
-      if (response.status === 200) {
-        const { data } = response;
-        return data;
-      }
+      const response = await http.get(
+        `/users/current/projects/${projectId}/tasks/${id}`
+      );
+      return success(response);
     } catch (err) {
-      console.error(err);
+      return fail(err.response);
     }
   },
 
-  async getProjectTaskById({ token, projectId, taskId }) {
+  async create({ projectId, data }) {
     try {
-      const response = await axios({
-        baseURL,
-        url: `/users/current/projects/${projectId}/tasks/${taskId}`,
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-      });
-
-      if (response.status === 200) {
-        const { data } = response;
-        return data;
-      }
+      const response = await http.post(
+        `/users/current/projects/${projectId}/tasks`,
+        data
+      );
+      return success(response);
     } catch (err) {
-      console.error(err);
+      return fail(err.response);
     }
   },
 
-  async updateProjecTask({ token, projectId, taskId, data }) {
+  async update({ id, projectId, data }) {
     try {
-      const response = await axios({
-        baseURL: 'http://localhost:4000',
-        url: `/users/current/projects/${projectId}/tasks/${taskId}`,
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-        data,
-      });
-
-      if (response.status === 200) {
-        const { data } = response;
-        return data;
-      }
+      const response = await http.put(
+        `/users/current/projects/${projectId}/tasks/${id}`,
+        data
+      );
+      return success(response);
     } catch (err) {
-      console.error(err);
+      return fail(err.response);
     }
   },
 
-  async removeProjecTask({ token, projectId, taskId }) {
+  async remove({ id, projectId }) {
     try {
-      const response = await axios({
-        baseURL: 'http://localhost:4000',
-        url: `/users/current/projects/${projectId}/tasks/${taskId}`,
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-      });
-
-      if (response.status === 200) {
-        const { data } = response;
-        return data;
-      }
+      const response = await http.delete(
+        `/users/current/projects/${projectId}/tasks/${id}`
+      );
+      return success(response);
     } catch (err) {
-      console.error(err);
+      return fail(err.response);
     }
   },
 };
