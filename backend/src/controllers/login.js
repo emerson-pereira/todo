@@ -16,7 +16,7 @@ const loginController = {
 
       const token = user.generateAuthToken();
 
-      res.header('x-auth-token', token).json({
+      res.header('x-auth-token', token).status(200).json({
         _id: user._id,
         name: user.name,
         email: user.email,

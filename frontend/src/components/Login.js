@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import LoginAPI from '../api/LoginAPI';
 
 import StyledForm from './styles/StyledForm';
 import StyledInput from './styles/StyledInput';
@@ -22,42 +22,27 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const login = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios({
-        baseURL: 'http://localhost:4000',
-        url: '/login',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        data: {
-          email: user.email,
-          password: user.password,
-        },
+    const loggedUser = await LoginAPI.login({ data: user });
+
+    if (loggedUser) {
+      const { data, token } = loggedUser;
+      window.localStorage.setItem('user', JSON.stringify(data));
+      window.localStorage.setItem('token', token);
+
+      setUser({
+        email: '',
+        password: '',
       });
 
-      if (response.status === 200) {
-        const { data, headers } = response;
-        window.localStorage.setItem('token', headers['x-auth-token']);
-        window.localStorage.setItem('user', JSON.stringify(data));
-
-        setUser({
-          email: '',
-          password: '',
-        });
-
-        history.push('/');
-      }
-    } catch (err) {
-      console.error(err);
+      history.push('/');
     }
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit}>
+    <StyledForm onSubmit={login}>
       <h3>Login</h3>
 
       <p>
