@@ -16,10 +16,11 @@ import UpdateTask from './components/Task/UpdateTask';
 import RemoveTask from './components/Task/RemoveTask';
 
 import StyledContainer from './components/styles/StyledContainer';
-const token = localStorage.getItem('token');
+
+const checkToken = () => !!localStorage.getItem('token');
 
 const PrivateRoute = ({ children, ...rest }) =>
-  token ? (
+  checkToken() ? (
     <Route {...rest}>
       <StyledContainer>{children}</StyledContainer>
     </Route>
@@ -38,10 +39,10 @@ const Routes = () => (
     <Nav />
     <Switch>
       <PublicRoute path="/login">
-        {token ? <Redirect to="/" /> : <Login />}
+        {checkToken() ? <Redirect to="/" /> : <Login />}
       </PublicRoute>
       <PublicRoute path="/register">
-        {token ? <Redirect to="/" /> : <CreateUser />}
+        {checkToken() ? <Redirect to="/" /> : <CreateUser />}
       </PublicRoute>
 
       <PrivateRoute exact path="/">

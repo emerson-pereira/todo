@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import TaskAPI from '../../api/TaskAPI';
 
+import StyledForm from '../styles/StyledForm';
 import StyledButton from '../styles/StyledButton';
 
 const RemoveTask = () => {
@@ -35,16 +36,15 @@ const RemoveTask = () => {
   };
 
   return (
-    <>
-      <h4>Remove Task</h4>
-      <form onSubmit={removeTask}>
-        <p>
+    <StyledForm onSubmit={removeTask}>
+      <p>
+        <span>
           Remove <strong>{taskName}</strong>?
-        </p>
+        </span>
+      </p>
 
-        <StyledButton>Remove</StyledButton>
-      </form>
-    </>
+      <StyledButton>Remove</StyledButton>
+    </StyledForm>
   );
 };
 

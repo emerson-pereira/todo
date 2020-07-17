@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import FormInput from '../FormInput';
 import ProjectAPI from '../../api/ProjectAPI';
 
+import StyledForm from '../styles/StyledForm';
+import StyledInput from '../styles/StyledInput';
 import StyledButton from '../styles/StyledButton';
 
 const UpdateProject = () => {
@@ -37,24 +38,22 @@ const UpdateProject = () => {
   };
 
   return (
-    <>
-      <h4>Update Project</h4>
-      <form onSubmit={updateProject}>
-        <FormInput
-          label="Name"
-          input={{
-            type: 'text',
-            name: 'name',
-            value: projectName,
-            handleChange(e) {
-              setProjectName(e.target.value);
-            },
-          }}
-        />
+    <StyledForm onSubmit={updateProject}>
+      <h3>Update Project</h3>
 
-        <StyledButton>Update</StyledButton>
-      </form>
-    </>
+      <p>
+        <StyledInput
+          type="text"
+          value={projectName}
+          id="name"
+          name="name"
+          placeholder="Name"
+          onChange={(e) => setProjectName(e.target.value)}
+        />
+      </p>
+
+      <StyledButton block>Update</StyledButton>
+    </StyledForm>
   );
 };
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import ProjectAPI from '../../api/ProjectAPI';
 
+import StyledForm from '../styles/StyledForm';
 import StyledButton from '../styles/StyledButton';
 
 const RemoveProject = () => {
@@ -33,16 +34,15 @@ const RemoveProject = () => {
   };
 
   return (
-    <>
-      <h4> Project</h4>
-      <form onSubmit={removeProject}>
-        <p>
+    <StyledForm onSubmit={removeProject}>
+      <p>
+        <span>
           Remove <strong>{projectName}</strong>?
-        </p>
+        </span>
+      </p>
 
-        <StyledButton>Remove</StyledButton>
-      </form>
-    </>
+      <StyledButton>Remove</StyledButton>
+    </StyledForm>
   );
 };
 

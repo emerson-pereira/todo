@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import FormInput from './FormInput';
 
+import StyledForm from './styles/StyledForm';
+import StyledInput from './styles/StyledInput';
 import StyledButton from './styles/StyledButton';
 
 const Login = () => {
@@ -56,28 +57,33 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FormInput
-        label="Email"
-        input={{
-          type: 'text',
-          name: 'email',
-          value: user.email,
-          handleChange,
-        }}
-      />
+    <StyledForm onSubmit={handleSubmit}>
+      <h3>Login</h3>
 
-      <FormInput
-        label="Password"
-        input={{
-          type: 'password',
-          name: 'password',
-          value: user.password,
-          handleChange,
-        }}
-      />
-      <StyledButton>Login</StyledButton>
-    </form>
+      <p>
+        <StyledInput
+          type="text"
+          value={user.email}
+          id="email"
+          name="email"
+          placeholder="Email"
+          onChange={handleChange}
+        />
+      </p>
+
+      <p>
+        <StyledInput
+          type="password"
+          value={user.password}
+          id="password"
+          name="password"
+          placeholder="Password"
+          onChange={handleChange}
+        />
+      </p>
+
+      <StyledButton block>Login</StyledButton>
+    </StyledForm>
   );
 };
 

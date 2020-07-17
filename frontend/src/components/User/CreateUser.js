@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import UserAPI from '../../api/UserAPI';
 
 import StyledForm from '../styles/StyledForm';
 import StyledInput from '../styles/StyledInput';
@@ -11,6 +13,8 @@ const Login = () => {
     password: '',
   });
 
+  const history = useHistory();
+
   const handleChange = (e) => {
     e.preventDefault();
     setUser({
@@ -19,15 +23,24 @@ const Login = () => {
     });
   };
 
-  const createUser = (e) => {
+  const createUser = async (e) => {
     e.preventDefault();
 
-    console.log(user);
+    const newUser = await UserAPI.createUser({ data: user });
+
+    if (newUser) {
+      const { token, data } = newUser;
+
+      window.localStorage.setItem('token', token);
+      window.localStorage.setItem('user', JSON.stringify(data));
+
+      history.push('/');
+    }
   };
 
   return (
     <StyledForm onSubmit={createUser}>
-      <h3>Register user</h3>
+      <h3>Register up</h3>
 
       <p>
         <StyledInput

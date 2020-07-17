@@ -33,6 +33,10 @@ const StyledProject = styled.article`
     section:not(:first-child) {
       margin-top: 20px;
     }
+
+    .inline-actions-wrapper {
+      margin-left: 10px;
+    }
   }
 
   footer {

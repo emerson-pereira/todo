@@ -2,9 +2,11 @@ import styled from 'styled-components';
 
 const StyledDashboard = styled.div`
   display: flex;
+  padding: 0 40px;
 
   @media (max-width: 1000px) {
     flex-wrap: wrap-reverse;
+    padding: 0 20px;
   }
   .projects-list {
     width: 70%;

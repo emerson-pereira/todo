@@ -56,18 +56,18 @@ const Project = ({ id: projectId, name, tasks, setProjects }) => {
         <h2>{name}</h2>
         <div>
           <Link to={`/project/${projectId}/update`}>
-            <button>
+            <StyledButton inline icon>
               <span role="img" aria-label="Update Project">
                 ✏️
               </span>
-            </button>
+            </StyledButton>
           </Link>
           <Link to={`/project/${projectId}/remove`}>
-            <button>
+            <StyledButton inline icon>
               <span role="img" aria-label="Remove Project">
                 🗑️
               </span>
-            </button>
+            </StyledButton>
           </Link>
         </div>
       </header>
@@ -85,20 +85,26 @@ const Project = ({ id: projectId, name, tasks, setProjects }) => {
                       onChange={(e) => toggleTaskStatus(e, task._id)}
                     />
                     {task.name}
-                    <Link to={`/project/${projectId}/task/${task._id}/update`}>
-                      <button>
-                        <span role="img" aria-label="Update Project">
-                          ✏️
-                        </span>
-                      </button>
-                    </Link>
-                    <Link to={`/project/${projectId}/task/${task._id}/remove`}>
-                      <button>
-                        <span role="img" aria-label="Remove Project">
-                          🗑️
-                        </span>
-                      </button>
-                    </Link>
+                    <span className="inline-actions-wrapper">
+                      <Link
+                        to={`/project/${projectId}/task/${task._id}/update`}
+                      >
+                        <StyledButton icon inline>
+                          <span role="img" aria-label="Update Project">
+                            ✏️
+                          </span>
+                        </StyledButton>
+                      </Link>
+                      <Link
+                        to={`/project/${projectId}/task/${task._id}/remove`}
+                      >
+                        <StyledButton icon inline>
+                          <span role="img" aria-label="Remove Project">
+                            🗑️
+                          </span>
+                        </StyledButton>
+                      </Link>
+                    </span>
                   </label>
                 </li>
               ))}

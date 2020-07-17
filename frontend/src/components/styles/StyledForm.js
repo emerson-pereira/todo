@@ -7,6 +7,7 @@ const StyledForm = styled.form`
 
   & p {
     display: flex;
+    justify-content: center;
   }
 `;
 

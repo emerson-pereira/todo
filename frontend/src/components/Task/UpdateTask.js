@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import FormInput from '../FormInput';
 import TaskAPI from '../../api/TaskAPI';
 
+import StyledForm from '../styles/StyledForm';
+import StyledInput from '../styles/StyledInput';
 import StyledButton from '../styles/StyledButton';
 
 const UpdateTask = () => {
@@ -39,24 +40,23 @@ const UpdateTask = () => {
   };
 
   return (
-    <>
-      <h4>Update Task</h4>
-      <form onSubmit={updateTask}>
-        <FormInput
-          label="Name"
-          input={{
-            type: 'text',
-            name: 'name',
-            value: taskName,
-            handleChange(e) {
-              setTaskName(e.target.value);
-            },
-          }}
-        />
+    <StyledForm onSubmit={updateTask}>
+      <h3>Update Task</h3>
+      <form>
+        <p>
+          <StyledInput
+            type="text"
+            value={taskName}
+            id="name"
+            name="name"
+            placeholder="Name"
+            onChange={(e) => setTaskName(e.target.value)}
+          />
+        </p>
 
-        <StyledButton>Update</StyledButton>
+        <StyledButton block>Update</StyledButton>
       </form>
-    </>
+    </StyledForm>
   );
 };
 
