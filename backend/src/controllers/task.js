@@ -22,6 +22,11 @@ const projectController = {
     res.status(200).json(projectTasks);
   },
 
+  async getProjectTaskById(req, res) {
+    const projectTask = await Task.findById(req.params.taskId);
+    res.status(200).json(projectTask);
+  },
+
   async updateProjectTask(req, res) {
     const task = await Task.updateOne(
       { _id: req.params.taskId, project: req.params.projectId },

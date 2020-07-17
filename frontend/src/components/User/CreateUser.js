@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import FormInput from './FormInput';
 
-import StyledSection from './styles/StyledSection';
 import StyledButton from './styles/StyledButton';
 
 const Login = () => {
@@ -26,40 +25,38 @@ const Login = () => {
   };
 
   return (
-    <StyledSection>
-      <form onSubmit={handleSubmit}>
-        <FormInput
-          label="Name"
-          input={{
-            type: 'text',
-            name: 'name',
-            value: user.name,
-            handleChange,
-          }}
-        />
+    <form onSubmit={handleSubmit}>
+      <FormInput
+        label="Name"
+        input={{
+          type: 'text',
+          name: 'name',
+          value: user.name,
+          handleChange,
+        }}
+      />
 
-        <FormInput
-          label="Email"
-          input={{
-            type: 'text',
-            name: 'email',
-            value: user.email,
-            handleChange,
-          }}
-        />
+      <FormInput
+        label="Email"
+        input={{
+          type: 'text',
+          name: 'email',
+          value: user.email,
+          handleChange,
+        }}
+      />
 
-        <FormInput
-          label="Password"
-          input={{
-            type: 'password',
-            name: 'password',
-            value: user.password,
-            handleChange,
-          }}
-        />
-        <StyledButton>Submit</StyledButton>
-      </form>
-    </StyledSection>
+      <FormInput
+        label="Password"
+        input={{
+          type: 'password',
+          name: 'password',
+          value: user.password,
+          handleChange,
+        }}
+      />
+      <StyledButton>Submit</StyledButton>
+    </form>
   );
 };
 

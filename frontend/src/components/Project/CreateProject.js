@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import FormInput from '../FormInput';
+import styled from 'styled-components';
 import ProjectAPI from '../../api/ProjectAPI';
 
-import StyledSection from '../styles/StyledSection';
+import StyledFormInput from '../styles/StyledFormInput';
 import StyledButton from '../styles/StyledButton';
 
 const CreateProject = ({ setProjects }) => {
@@ -27,25 +27,36 @@ const CreateProject = ({ setProjects }) => {
     project && setProjectName('');
   };
 
-  return (
-    <StyledSection>
-      <h3>Create new project</h3>
-      <form onSubmit={createProject}>
-        <FormInput
-          label="Name"
-          input={{
-            type: 'text',
-            name: 'name',
-            value: projectName,
-            handleChange(e) {
-              setProjectName(e.target.value);
-            },
-          }}
-        />
+  const StyledBox = styled.aside`
+    padding: 40px;
+    @media (max-width: 1000px) {
+      padding: 20px;
+    }
+    text-align: center;
+    h3 {
+      margin: '0 0 20px';
+    }
+    form {
+      display: flex;
+      justify-content: space-between;
+    }
+  `;
 
+  return (
+    <StyledBox>
+      <h3 style={{ margin: '0 0 20px' }}>Create new project</h3>
+      <form onSubmit={createProject}>
+        <StyledFormInput
+          type="text"
+          value={projectName}
+          id="name"
+          name="name"
+          placeholder="Project name"
+          onChange={(e) => setProjectName(e.target.value)}
+        />
         <StyledButton>Create</StyledButton>
       </form>
-    </StyledSection>
+    </StyledBox>
   );
 };
 

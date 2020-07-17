@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 const StyledProject = styled.article`
   width: 100%;
-  max-width: 300px;
+  max-width: 350px;
   border: 1px solid #333;
   border-radius: 5px;
-  margin: 10px;
+  margin: 0 10px 20px;
   display: flex;
   flex-direction: column;
 

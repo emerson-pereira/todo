@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import ProjectAPI from '../../api/ProjectAPI';
 
-import StyledSection from '../styles/StyledSection';
 import StyledButton from '../styles/StyledButton';
 
 const RemoveProject = () => {
@@ -34,7 +33,7 @@ const RemoveProject = () => {
   };
 
   return (
-    <StyledSection>
+    <>
       <h4>Remover Project</h4>
       <form onSubmit={removeProject}>
         <p>
@@ -43,7 +42,7 @@ const RemoveProject = () => {
 
         <StyledButton>Remove</StyledButton>
       </form>
-    </StyledSection>
+    </>
   );
 };
 

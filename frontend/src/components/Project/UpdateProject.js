@@ -3,7 +3,6 @@ import { useParams, useHistory } from 'react-router-dom';
 import FormInput from '../FormInput';
 import ProjectAPI from '../../api/ProjectAPI';
 
-import StyledSection from '../styles/StyledSection';
 import StyledButton from '../styles/StyledButton';
 
 const UpdateProject = () => {
@@ -38,7 +37,7 @@ const UpdateProject = () => {
   };
 
   return (
-    <StyledSection>
+    <>
       <h4>Update Project</h4>
       <form onSubmit={updateProject}>
         <FormInput
@@ -55,7 +54,7 @@ const UpdateProject = () => {
 
         <StyledButton>Update</StyledButton>
       </form>
-    </StyledSection>
+    </>
   );
 };
 

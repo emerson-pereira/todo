@@ -21,11 +21,9 @@ const StyledNav = styled.nav`
     padding: 0;
     list-style: none;
     display: flex;
-    /* border: 1px solid black;
-    padding: 0 20px;
     li {
-      border: 1px solid pink;
-    } */
+      padding: 10px;
+    }
   }
 `;
 

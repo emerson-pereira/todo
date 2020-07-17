@@ -7,15 +7,15 @@ import StyledDashboard from './styles/StyledDashbaord';
 
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const getProjects = async () => {
-      const token = localStorage.getItem('token');
       const userProjects = await ProjectAPI.getUserProjects({ token });
       userProjects && setProjects(userProjects);
     };
-    getProjects();
-  }, []);
+    token && getProjects();
+  }, [token]);
 
   return (
     <StyledDashboard>

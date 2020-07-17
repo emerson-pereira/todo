@@ -17,7 +17,7 @@ const userController = {
 
     const token = user.generateAuthToken();
 
-    res.header('x-auth-token', token).send({
+    res.header('x-auth-token', token).status(201).send({
       _id: user._id,
       name: user.name,
       email: user.email,

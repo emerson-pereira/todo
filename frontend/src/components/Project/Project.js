@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import ProjectAPI from '../../api/ProjectAPI';
+import TaskAPI from '../../api/TaskAPI';
 
 import StyledProject from '../styles/StyledProject';
 import StyledFormInput from '../styles/StyledFormInput';
 import StyledButton from '../styles/StyledButton';
 
-const Project = ({ id, name, tasks, setProjects }) => {
+const Project = ({ id: projectId, name, tasks, setProjects }) => {
   const [newTaskName, setNewTaskName] = useState('');
+  const token = localStorage.getItem('token');
 
   const undoneTasks = tasks.filter((task) => !task.isDone);
   const doneTasks = tasks.filter((task) => task.isDone);
@@ -16,57 +17,36 @@ const Project = ({ id, name, tasks, setProjects }) => {
   const toggleTaskStatus = async (e, taskId) => {
     e.preventDefault();
 
-    const token = localStorage.getItem('token');
+    const task = await TaskAPI.updateProjecTask({
+      token,
+      projectId,
+      taskId,
+      data: {
+        isDone: e.target.checked,
+      },
+    });
 
-    try {
-      const response = await axios({
-        baseURL: 'http://localhost:4000',
-        url: `/users/current/projects/${id}/tasks/${taskId}`,
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-        data: {
-          isDone: e.target.checked,
-        },
-      });
-
-      if (response.status === 200) {
-        const userProjects = await ProjectAPI.getUserProjects({ token });
-        userProjects && setProjects(userProjects);
-      }
-    } catch (err) {
-      console.error(err);
+    if (task) {
+      const userProjects = await ProjectAPI.getUserProjects({ token });
+      userProjects && setProjects(userProjects);
     }
   };
 
   const addTask = async (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem('token');
+    const task = await TaskAPI.createProjectTask({
+      token,
+      projectId,
+      data: {
+        name: newTaskName,
+      },
+    });
 
-    try {
-      const response = await axios({
-        baseURL: 'http://localhost:4000',
-        url: `/users/current/projects/${id}/tasks`,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token,
-        },
-        data: {
-          name: newTaskName,
-        },
-      });
-
-      if (response.status === 201) {
-        setNewTaskName('');
-        const userProjects = await ProjectAPI.getUserProjects({ token });
-        userProjects && setProjects(userProjects);
-      }
-    } catch (err) {
-      console.error(err);
+    if (task) {
+      setNewTaskName('');
+      const userProjects = await ProjectAPI.getUserProjects({ token });
+      userProjects && setProjects(userProjects);
     }
   };
 
@@ -75,14 +55,14 @@ const Project = ({ id, name, tasks, setProjects }) => {
       <header>
         <h2>{name}</h2>
         <div>
-          <Link to={`/project/${id}/update`}>
+          <Link to={`/project/${projectId}/update`}>
             <button>
               <span role="img" aria-label="Update Project">
                 ✏️
               </span>
             </button>
           </Link>
-          <Link to={`/project/${id}/remove`}>
+          <Link to={`/project/${projectId}/remove`}>
             <button>
               <span role="img" aria-label="Remove Project">
                 🗑️
@@ -105,6 +85,20 @@ const Project = ({ id, name, tasks, setProjects }) => {
                       onChange={(e) => toggleTaskStatus(e, task._id)}
                     />
                     {task.name}
+                    <Link to={`/project/${projectId}/task/${task._id}/update`}>
+                      <button>
+                        <span role="img" aria-label="Update Project">
+                          ✏️
+                        </span>
+                      </button>
+                    </Link>
+                    <Link to={`/project/${projectId}/task/${task._id}/remove`}>
+                      <button>
+                        <span role="img" aria-label="Remove Project">
+                          🗑️
+                        </span>
+                      </button>
+                    </Link>
                   </label>
                 </li>
               ))}
@@ -142,7 +136,7 @@ const Project = ({ id, name, tasks, setProjects }) => {
               e.preventDefault();
               setNewTaskName(e.target.value);
             }}
-            placeholder="New Task"
+            placeholder="Task name"
           />
           <StyledButton onClick={addTask}>Add</StyledButton>
         </form>

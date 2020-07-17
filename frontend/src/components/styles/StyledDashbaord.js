@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
-const StyledDashboard = styled.main`
+const StyledDashboard = styled.div`
   display: flex;
+
   @media (max-width: 1000px) {
     flex-wrap: wrap-reverse;
   }
@@ -9,16 +10,18 @@ const StyledDashboard = styled.main`
     width: 70%;
     display: flex;
     flex-wrap: wrap;
-    background: #f2f2f2;
     @media (max-width: 1000px) {
       width: 100%;
     }
   }
   .new-project-box {
     background: #ccc;
+    border-radius: 5px;
     width: 30%;
+    align-self: flex-start;
     @media (max-width: 1000px) {
-      width: 100%;
+      width: 350px;
+      margin: 0 10px 20px;
     }
   }
 `;
