@@ -3,6 +3,28 @@ import axios from 'axios';
 const baseURL = 'http://localhost:4000';
 
 const ProjectAPI = {
+  async createUserProject({ token, data }) {
+    try {
+      const response = await axios({
+        baseURL,
+        url: `/users/current/projects`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token,
+        },
+        data,
+      });
+
+      if (response.status === 201) {
+        const { data } = response;
+        return data;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
   async getUserProjects({ token }) {
     try {
       const response = await axios({

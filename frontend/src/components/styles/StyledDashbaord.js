@@ -6,14 +6,20 @@ const StyledDashboard = styled.main`
     flex-wrap: wrap-reverse;
   }
   .projects-list {
-    flex-grow: 3;
+    width: 70%;
     display: flex;
     flex-wrap: wrap;
     background: #f2f2f2;
+    @media (max-width: 1000px) {
+      width: 100%;
+    }
   }
   .new-project-box {
-    flex-grow: 1;
     background: #ccc;
+    width: 30%;
+    @media (max-width: 1000px) {
+      width: 100%;
+    }
   }
 `;
 

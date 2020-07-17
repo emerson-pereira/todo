@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Project from './Project';
+import Project from './Project/Project';
+import CreateProject from './Project/CreateProject';
 import ProjectAPI from '../api/ProjectAPI';
 
 import StyledDashboard from './styles/StyledDashbaord';
@@ -30,7 +31,7 @@ const Dashboard = () => {
         ))}
       </div>
       <div className="new-project-box">
-        <div style={{ width: '300px', background: '#ccc' }}>Add project</div>
+        <CreateProject setProjects={setProjects} />
       </div>
     </StyledDashboard>
   );

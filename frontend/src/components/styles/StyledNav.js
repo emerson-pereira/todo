@@ -1,10 +1,18 @@
 import styled from 'styled-components';
 
 const StyledNav = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  background: #ccc;
   padding: 20px 40px;
+  margin: 0;
+  background: #ccc;
+
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
   h1 {
     margin: 0;
   }

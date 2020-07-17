@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import ProjectAPI from '../api/ProjectAPI';
+import ProjectAPI from '../../api/ProjectAPI';
 
-import StyledProject from './styles/StyledProject';
-import StyledFormInput from './styles/StyledFormInput';
-import StyledButton from './styles/StyledButton';
+import StyledProject from '../styles/StyledProject';
+import StyledFormInput from '../styles/StyledFormInput';
+import StyledButton from '../styles/StyledButton';
 
 const Project = ({ id, name, tasks, setProjects }) => {
   const [newTaskName, setNewTaskName] = useState('');
