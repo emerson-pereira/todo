@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import UserAPI from '../../api/UserAPI';
+import { UserContext } from '../../UserContext';
+import { setToken } from '../../utils';
 
 import StyledForm from '../styles/StyledForm';
 import StyledInput from '../styles/StyledInput';
@@ -12,6 +14,8 @@ const Login = () => {
     email: '',
     password: '',
   });
+
+  const { setUser: setContextUser } = useContext(UserContext);
 
   const history = useHistory();
 
@@ -31,8 +35,12 @@ const Login = () => {
     if (newUser) {
       const { token, data } = newUser;
 
-      window.localStorage.setItem('token', token);
-      window.localStorage.setItem('user', JSON.stringify(data));
+      setContextUser({
+        name: data.name,
+        email: data.email,
+      });
+
+      setToken(token);
 
       history.push('/');
     }

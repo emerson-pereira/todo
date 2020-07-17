@@ -1,53 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import React, { useEffect, useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import UserAPI from '../api/UserAPI';
-import { isAuth, getToken } from '../utils';
+import { UserContext } from '../UserContext';
+import { getToken, removeToken, isAuth } from '../utils';
 
 import StyledNav from './styles/StyledNav';
-
-import styled from 'styled-components';
-const StyledNavLink = styled.button`
-  font-size: 1em;
-  background: none;
-  border: 1px;
-
-  &:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-`;
+import StyledNavLink from './styles/StyledNavLink';
 
 const Nav = () => {
-  const [user, setUser] = useState({
-    name: '',
-    email: '',
-  });
-  const [isLogged, setIsLogged] = useState(false);
-
-  let location = useLocation();
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
     const getUser = async () => {
       const token = getToken();
-      const user = await UserAPI.getUser({ token });
-      console.log(user);
-      if (user) {
+      const userData = await UserAPI.getUser({ token });
+
+      userData &&
         setUser({
-          name: user.name,
-          email: user.email,
+          name: userData.name,
+          email: userData.email,
         });
-        setIsLogged(true);
-      }
     };
-    isAuth() && getUser();
-  }, [location]);
+
+    !user.name && isAuth() && getUser();
+  }, [setUser, user.name]);
 
   const history = useHistory();
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setIsLogged(false);
+    removeToken();
+
+    setUser({
+      name: '',
+      email: '',
+    });
+
     history.push('/login');
   };
 
@@ -56,11 +43,6 @@ const Nav = () => {
       <li>
         <Link to="/">
           <StyledNavLink>Home</StyledNavLink>
-        </Link>
-      </li>
-      <li>
-        <Link to="/user/profile">
-          <StyledNavLink>Your Profile</StyledNavLink>
         </Link>
       </li>
       <li>
@@ -91,8 +73,8 @@ const Nav = () => {
           <h1>Todo App</h1>
         </div>
         <div className="nav-links-wrapper">
-          {isLogged && <strong>{user.name}</strong>}
-          <ul>{isLogged ? <NavLogged /> : <NavNotLogged />}</ul>
+          {user.name && <strong>{user.name}</strong>}
+          <ul>{user.name ? <NavLogged /> : <NavNotLogged />}</ul>
         </div>
       </div>
     </StyledNav>

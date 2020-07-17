@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
 import ProjectAPI from '../../api/ProjectAPI';
 import TaskAPI from '../../api/TaskAPI';
-import { getToken } from '../../utils';
+import { getToken, formatDate } from '../../utils';
 
 import StyledProject from '../styles/StyledProject';
 import StyledInput from '../styles/StyledInput';
@@ -119,7 +120,10 @@ const Project = ({ id: projectId, name, tasks, setProjects }) => {
             <ul>
               {doneTasks.map((task) => (
                 <li key={task._id}>
-                  <label htmlFor={`task-${task.name}`}>
+                  <label
+                    data-tip={formatDate(task.updatedAt)}
+                    htmlFor={`task-${task.name}`}
+                  >
                     <input
                       type="checkbox"
                       id={`task-${task.name}`}
@@ -127,6 +131,7 @@ const Project = ({ id: projectId, name, tasks, setProjects }) => {
                       disabled
                     />
                     {task.name}
+                    <ReactTooltip backgroundColor="#333" />
                   </label>
                 </li>
               ))}

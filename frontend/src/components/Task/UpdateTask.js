@@ -43,20 +43,18 @@ const UpdateTask = () => {
   return (
     <StyledForm onSubmit={updateTask}>
       <h3>Update Task</h3>
-      <form>
-        <p>
-          <StyledInput
-            type="text"
-            value={taskName}
-            id="name"
-            name="name"
-            placeholder="Name"
-            onChange={(e) => setTaskName(e.target.value)}
-          />
-        </p>
+      <p>
+        <StyledInput
+          type="text"
+          value={taskName}
+          id="name"
+          name="name"
+          placeholder="Name"
+          onChange={(e) => setTaskName(e.target.value)}
+        />
+      </p>
 
-        <StyledButton block>Update</StyledButton>
-      </form>
+      <StyledButton block>Update</StyledButton>
     </StyledForm>
   );
 };
