@@ -24,6 +24,11 @@ const projectController = {
     res.status(200).json(userProjects);
   },
 
+  async getUserProjectById(req, res) {
+    const userProject = await Project.findById(req.params.projectId);
+    res.status(200).json(userProject);
+  },
+
   async updateUserProject(req, res) {
     const project = await Project.findByIdAndUpdate(
       req.params.projectId,

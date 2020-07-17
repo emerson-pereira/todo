@@ -9,14 +9,11 @@ const StyledDashboard = styled.main`
     flex-grow: 3;
     display: flex;
     flex-wrap: wrap;
-    border: 2px solid pink;
-    /* padding: 20px; */
+    background: #f2f2f2;
   }
   .new-project-box {
     flex-grow: 1;
-    /* display: flex;  */
-    /* flex-wrap: nowrap; */
-    border: 2px solid yellow;
+    background: #ccc;
   }
 `;
 

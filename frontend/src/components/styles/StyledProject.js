@@ -6,6 +6,8 @@ const StyledProject = styled.article`
   border: 1px solid #333;
   border-radius: 5px;
   margin: 10px;
+  display: flex;
+  flex-direction: column;
 
   header {
     display: flex;
@@ -23,6 +25,7 @@ const StyledProject = styled.article`
 
   main {
     padding: 20px;
+    flex: auto;
 
     h4,
     ul {

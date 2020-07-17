@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import ProjectAPI from '../api/ProjectAPI';
 
 import StyledProject from './styles/StyledProject';
 import StyledFormInput from './styles/StyledFormInput';
 import StyledButton from './styles/StyledButton';
 
-const Project = ({ id, name, tasks, getProjects }) => {
+const Project = ({ id, name, tasks, setProjects }) => {
   const [newTaskName, setNewTaskName] = useState('');
 
   const undoneTasks = tasks.filter((task) => !task.isDone);
@@ -31,7 +33,8 @@ const Project = ({ id, name, tasks, getProjects }) => {
       });
 
       if (response.status === 200) {
-        getProjects();
+        const userProjects = await ProjectAPI.getUserProjects({ token });
+        userProjects && setProjects(userProjects);
       }
     } catch (err) {
       console.error(err);
@@ -59,7 +62,8 @@ const Project = ({ id, name, tasks, getProjects }) => {
 
       if (response.status === 201) {
         setNewTaskName('');
-        getProjects();
+        const userProjects = await ProjectAPI.getUserProjects({ token });
+        userProjects && setProjects(userProjects);
       }
     } catch (err) {
       console.error(err);
@@ -71,8 +75,20 @@ const Project = ({ id, name, tasks, getProjects }) => {
       <header>
         <h2>{name}</h2>
         <div>
-          <button>✏️</button>
-          <button>🗑️</button>
+          <Link to={`/project/${id}/update`}>
+            <button>
+              <span role="img" aria-label="Update Project">
+                ✏️
+              </span>
+            </button>
+          </Link>
+          <Link to={`/project/${id}/remove`}>
+            <button>
+              <span role="img" aria-label="Remove Project">
+                🗑️
+              </span>
+            </button>
+          </Link>
         </div>
       </header>
       <main>
