@@ -19,7 +19,7 @@ const RemoveProject = () => {
       project && setProjectName(project.name);
     };
     getCurrentProject();
-  }, [projectId, token]);
+  }, [token, projectId]);
 
   const removeProject = async (e) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ const RemoveProject = () => {
 
   return (
     <>
-      <h4>Remover Project</h4>
+      <h4> Project</h4>
       <form onSubmit={removeProject}>
         <p>
           Remove <strong>{projectName}</strong>?

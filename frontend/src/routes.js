@@ -11,6 +11,8 @@ import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import UpdateProject from './components/Project/UpdateProject';
 import RemoveProject from './components/Project/RemoveProject';
+import UpdateTask from './components/Task/UpdateTask';
+import RemoveTask from './components/Task/RemoveTask';
 
 import StyledContainer from './components/styles/StyledContainer';
 const token = localStorage.getItem('token');
@@ -50,10 +52,10 @@ const Routes = () => (
       </PrivateRoute>
 
       <PrivateRoute path="/project/:projectId/task/:taskId/update">
-        <p>Update Task</p>
+        <UpdateTask />
       </PrivateRoute>
       <PrivateRoute path="/project/:projectId/task/:taskId/remove">
-        <p>Remove task</p>
+        <RemoveTask />
       </PrivateRoute>
     </Switch>
   </Router>

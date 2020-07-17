@@ -5,6 +5,21 @@ import ProjectAPI from '../../api/ProjectAPI';
 import StyledFormInput from '../styles/StyledFormInput';
 import StyledButton from '../styles/StyledButton';
 
+const StyledBox = styled.aside`
+  padding: 40px;
+  @media (max-width: 1000px) {
+    padding: 20px;
+  }
+  text-align: center;
+  h3 {
+    margin: '0 0 20px';
+  }
+  form {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
 const CreateProject = ({ setProjects }) => {
   const [projectName, setProjectName] = useState('');
   const token = localStorage.getItem('token');
@@ -26,21 +41,6 @@ const CreateProject = ({ setProjects }) => {
 
     project && setProjectName('');
   };
-
-  const StyledBox = styled.aside`
-    padding: 40px;
-    @media (max-width: 1000px) {
-      padding: 20px;
-    }
-    text-align: center;
-    h3 {
-      margin: '0 0 20px';
-    }
-    form {
-      display: flex;
-      justify-content: space-between;
-    }
-  `;
 
   return (
     <StyledBox>

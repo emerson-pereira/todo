@@ -1,53 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import FormInput from '../FormInput';
-import ProjectAPI from '../../api/ProjectAPI';
+import TaskAPI from '../../api/TaskAPI';
 
 import StyledButton from '../styles/StyledButton';
 
-const UpdateProject = () => {
-  const [projectName, setProjectName] = useState('');
-  const { projectId } = useParams();
+const UpdateTask = () => {
+  const [taskName, setTaskName] = useState('');
+  const { projectId, taskId } = useParams();
   const history = useHistory();
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    const getCurrentProject = async () => {
-      const project = await ProjectAPI.getUserProjectById({
+    const getCurrentTask = async () => {
+      const task = await TaskAPI.getProjectTaskById({
         token,
         projectId,
+        taskId,
       });
-      project && setProjectName(project.name);
+      task && setTaskName(task.name);
     };
-    getCurrentProject();
-  }, [token, projectId]);
+    getCurrentTask();
+  }, [token, projectId, taskId]);
 
-  const updateProject = async (e) => {
+  const updateTask = async (e) => {
     e.preventDefault();
 
-    const project = await ProjectAPI.updateUserProject({
+    const task = await TaskAPI.updateProjecTask({
       token,
       projectId,
+      taskId,
       data: {
-        name: projectName,
+        name: taskName,
       },
     });
 
-    project && history.push('/');
+    task && history.push('/');
   };
 
   return (
     <>
-      <h4>Update Project</h4>
-      <form onSubmit={updateProject}>
+      <h4>Update Task</h4>
+      <form onSubmit={updateTask}>
         <FormInput
           label="Name"
           input={{
             type: 'text',
             name: 'name',
-            value: projectName,
+            value: taskName,
             handleChange(e) {
-              setProjectName(e.target.value);
+              setTaskName(e.target.value);
             },
           }}
         />
@@ -58,4 +60,4 @@ const UpdateProject = () => {
   );
 };
 
-export default UpdateProject;
+export default UpdateTask;
