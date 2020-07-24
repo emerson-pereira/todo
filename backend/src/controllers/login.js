@@ -1,51 +1,52 @@
 const bcrypt = require('bcrypt');
+const loginSchema = require('./schemas/loginSchema');
 const User = require('../models/User');
+const { success, fail } = require('../utils/responder');
 
 const loginController = {
   async login(req, res) {
-    if (!req.body.email || !req.body.password) {
-      return res.status(401).json({
-        error: {
-          message: 'No email or password provided.',
-        },
-      });
-    }
+    const { value, error } = loginSchema.validate(req.body);
 
-    const user = await User.findOne({ email: req.body.email }).select(
-      '+password'
-    );
-
-    if (!user) {
-      return res.status(404).json({
-        error: {
-          message: 'User does not exist.',
-        },
+    if (error) {
+      return fail(res, {
+        status: 400,
+        message: error.details[0].message,
       });
     }
 
     try {
-      const isMatch = await bcrypt.compare(req.body.password, user.password);
+      const query = { email: value.email };
+      const user = await User.findOne(query).select('+password');
+
+      if (!user) {
+        return fail(res, {
+          status: 404,
+          message: 'User not found',
+        });
+      }
+
+      const isMatch = await bcrypt.compare(value.password, user.password);
 
       if (!isMatch) {
-        return res.status(401).json({
-          error: {
-            message: 'Invalid credentials.',
-          },
+        return fail(res, {
+          status: 401,
+          message: 'Invalid credentials',
         });
       }
 
       const token = user.generateAuthToken();
 
-      res.header('x-auth-token', token).status(200).json({
-        name: user.name,
-        email: user.email,
-      });
-    } catch (err) {
-      res.status(500).json({
-        error: {
-          message: 'Unexpected error. Try again later.',
+      success(res, {
+        data: {
+          name: user.name,
+          email: user.email,
+        },
+        headers: {
+          'x-auth-token': token,
         },
       });
+    } catch (err) {
+      fail(res);
     }
   },
 };

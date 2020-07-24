@@ -4,6 +4,11 @@ const Project = require('../models/Project');
 const Task = require('../models/Task');
 
 const userController = {
+  async getCurrentUser(req, res) {
+    const user = await User.findById(req.user.id);
+    res.status(200).json(user);
+  },
+
   async createUser(req, res) {
     const user = new User({
       name: req.body.name,
@@ -24,20 +29,15 @@ const userController = {
     });
   },
 
-  async getCurrentUser(req, res) {
-    const user = await User.findById(req.user._id);
-    res.status(200).json(user);
-  },
-
   async updateCurrentUser(req, res) {
-    const user = await User.findByIdAndUpdate(req.user._id, req.body);
+    const user = await User.findByIdAndUpdate(req.user.id, req.body);
     res.status(200).json(user);
   },
 
   async removeCurrentUser(req, res) {
-    const user = await User.findByIdAndDelete(req.user._id);
+    const user = await User.findByIdAndDelete(req.user.id);
 
-    await Project.deleteMany({ owner: req.user._id });
+    await Project.deleteMany({ owner: req.user.id });
 
     await Task.deleteMany({
       project: {

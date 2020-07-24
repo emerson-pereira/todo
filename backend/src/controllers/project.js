@@ -1,52 +1,153 @@
+const projectSchema = require('./schemas/projectSchema');
 const Project = require('../models/Project');
 const User = require('../models/User');
 const Task = require('../models/Task');
+const { success, fail } = require('../utils/responder');
 
 const projectController = {
-  async createUserProject(req, res) {
-    const project = new Project(req.body);
-
-    const user = await User.findByIdAndUpdate(req.user._id, {
-      $push: { projects: project },
-    });
-
-    project.owner = user;
-    await project.save();
-
-    res.status(201).json(project);
-  },
-
   async getUserProjects(req, res) {
-    const userProjects = await User.findById(req.user._id).populate({
-      path: 'projects',
-      populate: { path: 'tasks', model: 'Task' },
-    });
-    res.status(200).json(userProjects);
+    try {
+      const userProjects = await User.findById(req.user.id).populate({
+        path: 'projects',
+        populate: { path: 'tasks', model: 'Task' },
+      });
+
+      success(res, {
+        data: {
+          projects: userProjects.projects,
+        },
+      });
+    } catch (err) {
+      fail(res);
+    }
   },
 
   async getUserProjectById(req, res) {
-    const userProject = await Project.findById(req.params.projectId);
-    res.status(200).json(userProject);
+    try {
+      const project = await Project.findOne({
+        _id: req.params.projectId,
+        owner: req.user.id,
+      });
+
+      if (!project) {
+        return fail(res, {
+          status: 404,
+          message: 'Project not found',
+        });
+      }
+
+      success(res, {
+        data: {
+          id: project._id,
+          name: project.name,
+        },
+      });
+    } catch (err) {
+      fail(res);
+    }
+  },
+
+  async createUserProject(req, res) {
+    const { value, error } = projectSchema.validate(req.body);
+
+    if (error) {
+      return fail(res, {
+        status: 400,
+        message: error.details[0].message,
+      });
+    }
+
+    try {
+      const project = new Project(value);
+      const user = await User.findByIdAndUpdate(req.user.id, {
+        $push: { projects: project },
+      });
+      project.owner = user;
+      await project.save();
+
+      success(res, {
+        status: 201,
+        data: {
+          id: project._id,
+          name: project.name,
+        },
+      });
+    } catch (err) {
+      fail(res);
+    }
   },
 
   async updateUserProject(req, res) {
-    const project = await Project.findByIdAndUpdate(
-      req.params.projectId,
-      req.body
-    );
-    res.status(200).json(project);
+    const { value, error } = projectSchema.validate(req.body);
+
+    if (error) {
+      return fail(res, {
+        status: 400,
+        message: error.details[0].message,
+      });
+    }
+
+    try {
+      const query = {
+        _id: req.params.projectId,
+        owner: req.user.id,
+      };
+      const data = value;
+      const options = {
+        new: true,
+      };
+
+      const project = await Project.findOneAndUpdate(query, data, options);
+
+      if (!project) {
+        return fail(res, {
+          status: 404,
+          message: 'Project not found',
+        });
+      }
+
+      success(res, {
+        data: {
+          id: project._id,
+          name: project.name,
+        },
+      });
+    } catch (err) {
+      fail(res);
+    }
   },
 
   async removeUserProject(req, res) {
-    const project = await Project.findByIdAndDelete(req.params.projectId);
+    try {
+      const project = await Project.findOneAndDelete({
+        _id: req.params.projectId,
+        owner: req.user.id,
+      });
 
-    await User.findByIdAndUpdate(req.user._id, {
-      $pull: { projects: project._id },
-    });
+      if (!project) {
+        return fail(res, {
+          status: 404,
+          message: 'Project not found',
+        });
+      }
 
-    await Task.deleteMany({ project: project._id });
+      await User.findByIdAndUpdate(req.user.id, {
+        $pull: { projects: project._id },
+      });
 
-    res.status(200).json(project);
+      await Task.deleteMany({ project: project._id });
+
+      success(res, {
+        data: {
+          id: project._id,
+          name: project.name,
+          tasks: project.tasks,
+          owner: project.owner,
+        },
+      });
+    } catch (err) {
+      fail(res);
+    }
   },
 };
 

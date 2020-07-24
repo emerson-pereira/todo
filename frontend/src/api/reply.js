@@ -6,7 +6,7 @@ export const fail = (response) => {
   if (!response) {
     return {
       error: {
-        message: 'No response from server.',
+        message: 'No response from server',
       },
     };
   }

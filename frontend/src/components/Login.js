@@ -51,7 +51,7 @@ const Login = () => {
     } catch (err) {
       openSnackbar({
         type: 'error',
-        text: 'Something went wrong logging in.',
+        text: 'Something went wrong logging in',
       });
     }
   };

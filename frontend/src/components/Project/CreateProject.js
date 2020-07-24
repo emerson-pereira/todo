@@ -34,7 +34,7 @@ const CreateProject = ({ setProjects }) => {
 
     if (response.data) {
       setProjectName('');
-      // updateProjectListState(response.data)
+      // updateProjectListState(response.data.name)
       // ignores rest below
       const response = await ProjectAPI.find();
       if (response.data) {

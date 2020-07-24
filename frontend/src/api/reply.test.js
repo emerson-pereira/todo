@@ -17,13 +17,13 @@ it('API fail reply with valid data', () => {
     fail({
       data: {
         error: {
-          message: 'An error occurred.',
+          message: 'An error occurred',
         },
       },
     })
   ).toMatchObject({
     error: {
-      message: 'An error occurred.',
+      message: 'An error occurred',
     },
   });
 });
@@ -31,7 +31,7 @@ it('API fail reply with valid data', () => {
 it('API fail reply with invalid data', () => {
   expect(fail()).toMatchObject({
     error: {
-      message: 'No response from server.',
+      message: 'No response from server',
     },
   });
 });
