@@ -1,51 +1,135 @@
 const bcrypt = require('bcrypt');
+const userSchema = require('./schemas/userSchema');
+const updateUserSchema = require('./schemas/updateUserSchema');
 const User = require('../models/User');
 const Project = require('../models/Project');
 const Task = require('../models/Task');
+const { success, fail } = require('../utils/responder');
+const { getErrorMessage } = require('../utils/joi');
 
 const userController = {
   async getCurrentUser(req, res) {
-    const user = await User.findById(req.user.id);
-    res.status(200).json(user);
+    try {
+      const user = await User.findById(req.user.id).select('-projects -__v');
+
+      success(res, {
+        data: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+      });
+    } catch (err) {
+      fail(res);
+    }
   },
 
   async createUser(req, res) {
-    const user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-    });
+    const { value, error } = userSchema.validate(req.body);
 
-    user.password = await bcrypt.hash(user.password, 10);
+    if (error) {
+      return fail(res, {
+        status: 400,
+        message: getErrorMessage(error),
+      });
+    }
 
-    await user.save();
+    try {
+      const user = new User(value);
+      user.password = await bcrypt.hash(user.password, 10);
+      const newUser = await user.save();
 
-    const token = user.generateAuthToken();
+      const token = user.generateAuthToken();
 
-    res.header('x-auth-token', token).status(201).send({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-    });
+      success(res, {
+        status: 201,
+        data: {
+          id: newUser._id,
+          name: newUser.name,
+          email: newUser.email,
+          // igonored fields
+          // newUser.projects
+          // newUser.__v
+        },
+        headers: {
+          'x-auth-token': token,
+        },
+      });
+    } catch (error) {
+      fail(res);
+    }
   },
 
   async updateCurrentUser(req, res) {
-    const user = await User.findByIdAndUpdate(req.user.id, req.body);
-    res.status(200).json(user);
+    const { value, error } = updateUserSchema.validate(req.body);
+
+    if (error) {
+      return fail(res, {
+        status: 400,
+        message: getErrorMessage(error),
+      });
+    }
+
+    try {
+      const data = value;
+      const options = { new: true };
+
+      const user = await User.findByIdAndUpdate(
+        req.user.id,
+        data,
+        options
+      ).select('-projects -__v');
+
+      if (!user) {
+        return fail(res, {
+          status: 404,
+          message: 'User not identified',
+        });
+      }
+
+      success(res, {
+        data: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+      });
+    } catch (err) {
+      fail(res);
+    }
   },
 
   async removeCurrentUser(req, res) {
-    const user = await User.findByIdAndDelete(req.user.id);
+    try {
+      const user = await User.findByIdAndDelete(req.user.id).select(
+        '-projects -__v'
+      );
 
-    await Project.deleteMany({ owner: req.user.id });
+      if (!user) {
+        return fail(res, {
+          status: 404,
+          message: 'User not identified',
+        });
+      }
 
-    await Task.deleteMany({
-      project: {
-        $in: user.projects,
-      },
-    });
+      await Project.deleteMany({ owner: req.user.id });
 
-    res.status(200).json(user);
+      await Task.deleteMany({
+        project: {
+          $in: user.projects,
+        },
+      });
+
+      success(res, {
+        data: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+      });
+    } catch (err) {
+      fail(res);
+    }
   },
 };
 

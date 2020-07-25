@@ -3,20 +3,30 @@ const Project = require('../models/Project');
 const User = require('../models/User');
 const Task = require('../models/Task');
 const { success, fail } = require('../utils/responder');
+const { getErrorMessage } = require('../utils/joi');
 
 const projectController = {
   async getUserProjects(req, res) {
     try {
-      const userProjects = await User.findById(req.user.id).populate({
-        path: 'projects',
-        populate: { path: 'tasks', model: 'Task' },
-      });
+      const query = { owner: req.user.id };
 
-      success(res, {
-        data: {
-          projects: userProjects.projects,
-        },
-      });
+      const projects = await Project.find(query)
+        .select('-owner -__v')
+        .populate('tasks', '-__v -project');
+
+      const data = projects.map((project) => ({
+        id: project._id,
+        name: project.name,
+        tasks: project.tasks.map((task) => ({
+          id: task._id,
+          name: task.name,
+          isDone: task.isDone,
+          createdAt: task.createdAt,
+          updatedAt: task.updatedAt,
+        })),
+      }));
+
+      success(res, { data });
     } catch (err) {
       fail(res);
     }
@@ -27,7 +37,7 @@ const projectController = {
       const project = await Project.findOne({
         _id: req.params.projectId,
         owner: req.user.id,
-      });
+      }).select('-owner -__v');
 
       if (!project) {
         return fail(res, {
@@ -40,6 +50,7 @@ const projectController = {
         data: {
           id: project._id,
           name: project.name,
+          tasks: project.tasks,
         },
       });
     } catch (err) {
@@ -53,7 +64,7 @@ const projectController = {
     if (error) {
       return fail(res, {
         status: 400,
-        message: error.details[0].message,
+        message: getErrorMessage(error),
       });
     }
 
@@ -63,16 +74,21 @@ const projectController = {
         $push: { projects: project },
       });
       project.owner = user;
-      await project.save();
+      const newProject = await project.save();
 
       success(res, {
         status: 201,
         data: {
-          id: project._id,
-          name: project.name,
+          id: newProject._id,
+          name: newProject.name,
+          // ignored fields:
+          // tasks
+          // newProject.owner
+          // newProject.__v
         },
       });
     } catch (err) {
+      console.log(err);
       fail(res);
     }
   },
@@ -83,7 +99,7 @@ const projectController = {
     if (error) {
       return fail(res, {
         status: 400,
-        message: error.details[0].message,
+        message: getErrorMessage(error),
       });
     }
 
@@ -93,11 +109,13 @@ const projectController = {
         owner: req.user.id,
       };
       const data = value;
-      const options = {
-        new: true,
-      };
+      const options = { new: true };
 
-      const project = await Project.findOneAndUpdate(query, data, options);
+      const project = await Project.findOneAndUpdate(
+        query,
+        data,
+        options
+      ).select('-owner -__v');
 
       if (!project) {
         return fail(res, {
@@ -110,6 +128,7 @@ const projectController = {
         data: {
           id: project._id,
           name: project.name,
+          tasks: project.tasks,
         },
       });
     } catch (err) {
@@ -122,7 +141,7 @@ const projectController = {
       const project = await Project.findOneAndDelete({
         _id: req.params.projectId,
         owner: req.user.id,
-      });
+      }).select('-owner -__v');
 
       if (!project) {
         return fail(res, {
@@ -142,7 +161,6 @@ const projectController = {
           id: project._id,
           name: project.name,
           tasks: project.tasks,
-          owner: project.owner,
         },
       });
     } catch (err) {
