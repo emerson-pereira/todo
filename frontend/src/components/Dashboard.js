@@ -13,7 +13,7 @@ const Dashboard = () => {
       const response = await ProjectAPI.find();
 
       if (response.data) {
-        setProjects(response.data.projects);
+        setProjects(response.data);
       } else {
         // openSnackbar({ type: 'error', message: response.message })
       }
@@ -26,8 +26,8 @@ const Dashboard = () => {
       <div className="projects-list">
         {projects.map((project) => (
           <Project
-            key={project._id}
-            id={project._id}
+            key={project.id}
+            id={project.id}
             name={project.name}
             tasks={project.tasks}
             setProjects={setProjects}

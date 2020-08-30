@@ -14,6 +14,13 @@ const projectController = {
         .select('-owner -__v')
         .populate('tasks', '-__v -project');
 
+      if (!projects) {
+        return fail(res, {
+          status: 404,
+          message: 'User not identified',
+        });
+      }
+
       const data = projects.map((project) => ({
         id: project._id,
         name: project.name,

@@ -38,7 +38,7 @@ const CreateProject = ({ setProjects }) => {
       // ignores rest below
       const response = await ProjectAPI.find();
       if (response.data) {
-        setProjects(response.data.projects);
+        setProjects(response.data);
       }
     }
   };

@@ -33,7 +33,7 @@ const Project = ({ id: projectId, name, tasks, setProjects }) => {
       // ignores rest below
       const response = await ProjectAPI.find();
       if (response.data) {
-        setProjects(response.data.projects);
+        setProjects(response.data);
       }
     } else {
     }
@@ -57,7 +57,7 @@ const Project = ({ id: projectId, name, tasks, setProjects }) => {
       // ignores rest below
       const response = await ProjectAPI.find();
       if (response.data) {
-        setProjects(response.data.projects);
+        setProjects(response.data);
       }
     }
   };
@@ -89,27 +89,23 @@ const Project = ({ id: projectId, name, tasks, setProjects }) => {
             <h4>Todo</h4>
             <ul>
               {undoneTasks.map((task) => (
-                <li key={task._id}>
+                <li key={task.id}>
                   <label htmlFor={`task-${task.name}`}>
                     <input
                       type="checkbox"
                       id={`task-${task.name}`}
-                      onChange={(e) => toggleTaskStatus(e, task._id)}
+                      onChange={(e) => toggleTaskStatus(e, task.id)}
                     />
                     {task.name}
                     <span className="inline-actions-wrapper">
-                      <Link
-                        to={`/project/${projectId}/task/${task._id}/update`}
-                      >
+                      <Link to={`/project/${projectId}/task/${task.id}/update`}>
                         <StyledButton icon inline>
                           <span role="img" aria-label="Update Project">
                             ✏️
                           </span>
                         </StyledButton>
                       </Link>
-                      <Link
-                        to={`/project/${projectId}/task/${task._id}/remove`}
-                      >
+                      <Link to={`/project/${projectId}/task/${task.id}/remove`}>
                         <StyledButton icon inline>
                           <span role="img" aria-label="Remove Project">
                             🗑️
@@ -128,7 +124,7 @@ const Project = ({ id: projectId, name, tasks, setProjects }) => {
             <h4>Done</h4>
             <ul>
               {doneTasks.map((task) => (
-                <li key={task._id}>
+                <li key={task.id}>
                   <label
                     data-tip={formatDate(task.updatedAt)}
                     htmlFor={`task-${task.name}`}

@@ -12,6 +12,13 @@ const userController = {
     try {
       const user = await User.findById(req.user.id).select('-projects -__v');
 
+      if (!user) {
+        return fail(res, {
+          status: 404,
+          message: 'User not identified',
+        });
+      }
+
       success(res, {
         data: {
           id: user._id,
